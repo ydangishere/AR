@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: { formats: ['image/avif', 'image/webp'] },
+  output: 'export',
+  trailingSlash: true,
+  images: { 
+    unoptimized: true,
+    formats: ['image/avif', 'image/webp'] 
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
