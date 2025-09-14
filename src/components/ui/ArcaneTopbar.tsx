@@ -34,7 +34,7 @@ export default function ArcaneTopbar() {
           width={390}
           height={5}
           sizes="100vw"
-          src="/assets/components/arcane-topbar/header2.png"
+          src="/AR/assets/components/arcane-topbar/header2.png"
           alt=""
         />
       </div>
@@ -50,7 +50,7 @@ export default function ArcaneTopbar() {
         width={186}
         height={39}
         sizes="100vw"
-        src="/assets/components/arcane-topbar/character-avatar.png"
+        src="/AR/assets/components/arcane-topbar/character-avatar.png"
         alt=""
       />
       
@@ -65,7 +65,7 @@ export default function ArcaneTopbar() {
         width={14}
         height={10}
         sizes="100vw"
-        src="/assets/components/arcane-topbar/menu-icon.png"
+        src="/AR/assets/components/arcane-topbar/menu-icon.png"
         alt=""
       />
       
@@ -80,7 +80,7 @@ export default function ArcaneTopbar() {
         width={26}
         height={26}
         sizes="100vw"
-        src="/assets/components/arcane-topbar/user-icon.png"
+        src="/AR/assets/components/arcane-topbar/user-icon.png"
         alt=""
       />
     </div>
