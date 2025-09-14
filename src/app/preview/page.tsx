@@ -23,10 +23,8 @@ const components = [
 
 export default function PreviewPage() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     console.log('Component mounted');
     
     // Delay hash check to ensure DOM is ready
@@ -76,10 +74,7 @@ export default function PreviewPage() {
     window.location.hash = '';
   };
 
-  // Only show content after mounting to ensure hash routing works
-  if (!mounted) {
-    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Initializing...</div>;
-  }
+  // Remove loading state for static export compatibility
 
   return (
     <div className="min-h-screen bg-gray-50">
