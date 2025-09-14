@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SampleCard from '@/components/ui/SampleCard';
 import ArcaneTopbar from '@/components/ui/ArcaneTopbar';
 
@@ -23,8 +23,28 @@ const components = [
 
 export default function PreviewPage() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    console.log('Preview page mounted');
+  }, []);
 
   const selected = components.find(c => c.id === selectedComponent);
+
+  const handleComponentClick = (componentId: string) => {
+    console.log('Clicked component:', componentId);
+    setSelectedComponent(componentId);
+  };
+
+  const handleBackClick = () => {
+    console.log('Back clicked');
+    setSelectedComponent(null);
+  };
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -34,7 +54,7 @@ export default function PreviewPage() {
           <h1 className="text-2xl font-bold">Component Gallery</h1>
           {selectedComponent && (
             <button
-              onClick={() => setSelectedComponent(null)}
+              onClick={handleBackClick}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               ← Back to List
@@ -52,7 +72,7 @@ export default function PreviewPage() {
               {components.map((comp) => (
                 <div
                   key={comp.id}
-                  onClick={() => setSelectedComponent(comp.id)}
+                  onClick={() => handleComponentClick(comp.id)}
                   className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all"
                 >
                   <h3 className="font-semibold text-lg">{comp.name}</h3>
