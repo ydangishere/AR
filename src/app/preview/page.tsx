@@ -95,7 +95,7 @@ export default function PreviewPage() {
       <div className="max-w-6xl mx-auto p-6">
         {/* Debug info */}
         <div className="bg-yellow-100 p-2 mb-4 text-xs">
-          <strong>Debug:</strong> selectedComponent = "{selectedComponent}", 
+          <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent}&quot;, 
           components.length = {components.length}
         </div>
         
