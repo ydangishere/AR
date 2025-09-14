@@ -97,8 +97,12 @@ export default function PreviewPage() {
         {/* Debug info */}
         <div className="bg-yellow-100 p-2 mb-4 text-xs">
           <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent}&quot;, 
-          hash = &quot;{typeof window !== 'undefined' ? window.location.hash : 'N/A'}&quot;,
+          hash = &quot;{typeof window !== 'undefined' ? window.location.hash : 'SSR'}&quot;,
           components = [{components.map(c => c.id).join(', ')}]
+          <br/>
+          <strong>Test links:</strong> 
+          <a href="#arcane-topbar" className="text-blue-600 ml-2">arcane-topbar</a>
+          <a href="#sample-card" className="text-blue-600 ml-2">sample-card</a>
         </div>
         
         {!selectedComponent ? (
@@ -107,20 +111,20 @@ export default function PreviewPage() {
             <p className="text-gray-600 mb-6">Click on any component to view it in full display</p>
             <div className="grid gap-4">
               {components.map((comp) => (
-                <button
-                  key={comp.id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log('Button clicked for:', comp.id);
-                    handleComponentClick(comp.id);
-                  }}
-                  className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all text-left w-full"
-                  type="button"
-                >
+                <div key={comp.id} className="bg-white p-4 rounded-lg shadow hover:shadow-md border transition-all">
                   <h3 className="font-semibold text-lg">{comp.name}</h3>
                   <p className="text-gray-600 text-sm">{comp.description}</p>
-                  <div className="text-blue-500 text-sm mt-2">Click to view →</div>
-                </button>
+                  <a 
+                    href={`#${comp.id}`}
+                    onClick={() => {
+                      console.log('Link clicked for:', comp.id);
+                      handleComponentClick(comp.id);
+                    }}
+                    className="inline-block text-blue-500 text-sm mt-2 hover:text-blue-700 hover:underline"
+                  >
+                    Click to view →
+                  </a>
+                </div>
               ))}
               
               {components.length === 1 && (
