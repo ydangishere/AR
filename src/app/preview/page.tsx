@@ -26,6 +26,13 @@ export default function PreviewPage() {
 
   useEffect(() => {
     console.log('Preview page mounted');
+    
+    // Check for hash-based routing as fallback
+    const hash = window.location.hash.replace('#', '');
+    if (hash && components.find(c => c.id === hash)) {
+      console.log('Setting component from hash:', hash);
+      setSelectedComponent(hash);
+    }
   }, []);
 
   const selected = components.find(c => c.id === selectedComponent);
@@ -33,11 +40,15 @@ export default function PreviewPage() {
   const handleComponentClick = (componentId: string) => {
     console.log('Clicked component:', componentId);
     setSelectedComponent(componentId);
+    // Update URL hash for shareable links
+    window.location.hash = componentId;
   };
 
   const handleBackClick = () => {
     console.log('Back clicked');
     setSelectedComponent(null);
+    // Clear URL hash
+    window.location.hash = '';
   };
 
   // Remove loading state for GitHub Pages compatibility
@@ -69,15 +80,20 @@ export default function PreviewPage() {
             <p className="text-gray-600 mb-6">Click on any component to view it in full display</p>
             <div className="grid gap-4">
               {components.map((comp) => (
-                <div
+                <button
                   key={comp.id}
-                  onClick={() => handleComponentClick(comp.id)}
-                  className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log('Button clicked for:', comp.id);
+                    handleComponentClick(comp.id);
+                  }}
+                  className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all text-left w-full"
+                  type="button"
                 >
                   <h3 className="font-semibold text-lg">{comp.name}</h3>
                   <p className="text-gray-600 text-sm">{comp.description}</p>
                   <div className="text-blue-500 text-sm mt-2">Click to view →</div>
-                </div>
+                </button>
               ))}
               
               {components.length === 1 && (
