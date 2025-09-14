@@ -26,13 +26,32 @@ export default function PreviewPage() {
 
   useEffect(() => {
     console.log('Preview page mounted');
+    console.log('Current URL:', window.location.href);
     
     // Check for hash-based routing as fallback
     const hash = window.location.hash.replace('#', '');
+    console.log('Hash found:', hash);
+    
     if (hash && components.find(c => c.id === hash)) {
       console.log('Setting component from hash:', hash);
       setSelectedComponent(hash);
+    } else if (hash) {
+      console.log('Hash not found in components:', hash);
     }
+    
+    // Listen for hash changes
+    const handleHashChange = () => {
+      const newHash = window.location.hash.replace('#', '');
+      console.log('Hash changed to:', newHash);
+      if (newHash && components.find(c => c.id === newHash)) {
+        setSelectedComponent(newHash);
+      } else {
+        setSelectedComponent(null);
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const selected = components.find(c => c.id === selectedComponent);
@@ -74,6 +93,12 @@ export default function PreviewPage() {
       </div>
 
       <div className="max-w-6xl mx-auto p-6">
+        {/* Debug info */}
+        <div className="bg-yellow-100 p-2 mb-4 text-xs">
+          <strong>Debug:</strong> selectedComponent = "{selectedComponent}", 
+          components.length = {components.length}
+        </div>
+        
         {!selectedComponent ? (
           // Component List View
           <div>
