@@ -25,37 +25,44 @@ export default function PreviewPage() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Component mounted');
-    
-    // Delay hash check to ensure DOM is ready
-    const checkHash = () => {
+    // Function to check and set hash
+    const checkAndSetHash = () => {
+      if (typeof window === 'undefined') return;
+      
       const hash = window.location.hash.replace('#', '');
       console.log('Checking hash:', hash);
-      console.log('Available components:', components.map(c => c.id));
+      console.log('Current URL:', window.location.href);
       
-      if (hash) {
-        const foundComponent = components.find(c => c.id === hash);
-        if (foundComponent) {
-          console.log('Found component:', foundComponent.name);
-          setSelectedComponent(hash);
-        } else {
-          console.log('Component not found for hash:', hash);
-        }
+      if (hash && components.find(c => c.id === hash)) {
+        console.log('Setting selectedComponent to:', hash);
+        setSelectedComponent(hash);
+      } else if (hash) {
+        console.log('Hash not found in components:', hash);
+        setSelectedComponent(null);
+      } else {
+        console.log('No hash, showing list');
+        setSelectedComponent(null);
       }
     };
     
-    // Check immediately and after a short delay
-    checkHash();
-    setTimeout(checkHash, 100);
+    // Initial check
+    checkAndSetHash();
     
     // Listen for hash changes
     const handleHashChange = () => {
-      console.log('Hash change detected');
-      checkHash();
+      console.log('Hash changed');
+      checkAndSetHash();
     };
     
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    
+    // Also check on popstate (back/forward buttons)
+    window.addEventListener('popstate', handleHashChange);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
   }, []);
 
   const selected = components.find(c => c.id === selectedComponent);
@@ -96,13 +103,16 @@ export default function PreviewPage() {
       <div className="max-w-6xl mx-auto p-6">
         {/* Debug info */}
         <div className="bg-yellow-100 p-2 mb-4 text-xs">
-          <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent}&quot;, 
-          hash = &quot;{typeof window !== 'undefined' ? window.location.hash : 'SSR'}&quot;,
-          components = [{components.map(c => c.id).join(', ')}]
+          <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent || 'null'}&quot;
           <br/>
-          <strong>Test links:</strong> 
-          <a href="#arcane-topbar" className="text-blue-600 ml-2">arcane-topbar</a>
-          <a href="#sample-card" className="text-blue-600 ml-2">sample-card</a>
+          <strong>Current URL:</strong> {typeof window !== 'undefined' ? window.location.href : 'SSR'}
+          <br/>
+          <strong>Available components:</strong> [{components.map(c => c.id).join(', ')}]
+          <br/>
+          <strong>Test direct links:</strong> 
+          <a href="#arcane-topbar" className="text-blue-600 ml-2 underline">→ arcane-topbar</a>
+          <a href="#sample-card" className="text-blue-600 ml-2 underline">→ sample-card</a>
+          <a href="#" className="text-gray-600 ml-2 underline">→ list</a>
         </div>
         
         {!selectedComponent ? (
