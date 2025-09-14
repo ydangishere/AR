@@ -2,8 +2,6 @@
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
-  basePath: '/AR',
-  assetPrefix: '/AR/',
   images: { 
     unoptimized: true,
     formats: ['image/avif', 'image/webp'] 
