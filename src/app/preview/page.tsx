@@ -23,31 +23,37 @@ const components = [
 
 export default function PreviewPage() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    console.log('Preview page mounted');
-    console.log('Current URL:', window.location.href);
+    setMounted(true);
+    console.log('Component mounted');
     
-    // Check for hash-based routing as fallback
-    const hash = window.location.hash.replace('#', '');
-    console.log('Hash found:', hash);
+    // Delay hash check to ensure DOM is ready
+    const checkHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      console.log('Checking hash:', hash);
+      console.log('Available components:', components.map(c => c.id));
+      
+      if (hash) {
+        const foundComponent = components.find(c => c.id === hash);
+        if (foundComponent) {
+          console.log('Found component:', foundComponent.name);
+          setSelectedComponent(hash);
+        } else {
+          console.log('Component not found for hash:', hash);
+        }
+      }
+    };
     
-    if (hash && components.find(c => c.id === hash)) {
-      console.log('Setting component from hash:', hash);
-      setSelectedComponent(hash);
-    } else if (hash) {
-      console.log('Hash not found in components:', hash);
-    }
+    // Check immediately and after a short delay
+    checkHash();
+    setTimeout(checkHash, 100);
     
     // Listen for hash changes
     const handleHashChange = () => {
-      const newHash = window.location.hash.replace('#', '');
-      console.log('Hash changed to:', newHash);
-      if (newHash && components.find(c => c.id === newHash)) {
-        setSelectedComponent(newHash);
-      } else {
-        setSelectedComponent(null);
-      }
+      console.log('Hash change detected');
+      checkHash();
     };
     
     window.addEventListener('hashchange', handleHashChange);
@@ -70,10 +76,10 @@ export default function PreviewPage() {
     window.location.hash = '';
   };
 
-  // Remove loading state for GitHub Pages compatibility
-  // if (!mounted) {
-  //   return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
-  // }
+  // Only show content after mounting to ensure hash routing works
+  if (!mounted) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Initializing...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -96,7 +102,8 @@ export default function PreviewPage() {
         {/* Debug info */}
         <div className="bg-yellow-100 p-2 mb-4 text-xs">
           <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent}&quot;, 
-          components.length = {components.length}
+          hash = &quot;{typeof window !== 'undefined' ? window.location.hash : 'N/A'}&quot;,
+          components = [{components.map(c => c.id).join(', ')}]
         </div>
         
         {!selectedComponent ? (
