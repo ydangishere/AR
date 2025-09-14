@@ -6,6 +6,8 @@ const nextConfig = {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'] 
   },
+  // Disable strict mode for better compatibility
+  reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
