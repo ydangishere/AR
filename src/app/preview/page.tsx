@@ -23,10 +23,8 @@ const components = [
 
 export default function PreviewPage() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     console.log('Preview page mounted');
   }, []);
 
@@ -42,9 +40,10 @@ export default function PreviewPage() {
     setSelectedComponent(null);
   };
 
-  if (!mounted) {
-    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
-  }
+  // Remove loading state for GitHub Pages compatibility
+  // if (!mounted) {
+  //   return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
+  // }
 
   return (
     <div className="min-h-screen bg-gray-50">
