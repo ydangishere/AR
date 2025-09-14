@@ -22,47 +22,33 @@ const components = [
 ];
 
 export default function PreviewPage() {
+  // Get hash directly from URL on client side
+  const getSelectedFromHash = () => {
+    if (typeof window === 'undefined') return null;
+    const hash = window.location.hash.replace('#', '');
+    return hash && components.find(c => c.id === hash) ? hash : null;
+  };
+
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Function to check and set hash
-    const checkAndSetHash = () => {
-      if (typeof window === 'undefined') return;
-      
-      const hash = window.location.hash.replace('#', '');
-      console.log('Checking hash:', hash);
-      console.log('Current URL:', window.location.href);
-      
-      if (hash && components.find(c => c.id === hash)) {
-        console.log('Setting selectedComponent to:', hash);
-        setSelectedComponent(hash);
-      } else if (hash) {
-        console.log('Hash not found in components:', hash);
-        setSelectedComponent(null);
-      } else {
-        console.log('No hash, showing list');
-        setSelectedComponent(null);
-      }
-    };
+    setIsClient(true);
     
-    // Initial check
-    checkAndSetHash();
+    // Set initial state from hash
+    const hashComponent = getSelectedFromHash();
+    console.log('Initial hash component:', hashComponent);
+    setSelectedComponent(hashComponent);
     
     // Listen for hash changes
     const handleHashChange = () => {
-      console.log('Hash changed');
-      checkAndSetHash();
+      const newHashComponent = getSelectedFromHash();
+      console.log('Hash changed, new component:', newHashComponent);
+      setSelectedComponent(newHashComponent);
     };
     
     window.addEventListener('hashchange', handleHashChange);
-    
-    // Also check on popstate (back/forward buttons)
-    window.addEventListener('popstate', handleHashChange);
-    
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-      window.removeEventListener('popstate', handleHashChange);
-    };
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const selected = components.find(c => c.id === selectedComponent);
@@ -105,11 +91,13 @@ export default function PreviewPage() {
         <div className="bg-yellow-100 p-2 mb-4 text-xs">
           <strong>Debug:</strong> selectedComponent = &quot;{selectedComponent || 'null'}&quot;
           <br/>
-          <strong>Current URL:</strong> {typeof window !== 'undefined' ? window.location.href : 'SSR'}
+          <strong>isClient:</strong> {isClient ? 'true' : 'false'}
+          <br/>
+          <strong>Current hash:</strong> {isClient ? window.location.hash || 'none' : 'SSR'}
           <br/>
           <strong>Available components:</strong> [{components.map(c => c.id).join(', ')}]
           <br/>
-          <strong>Test direct links:</strong> 
+          <strong>Quick navigation:</strong> 
           <a href="#arcane-topbar" className="text-blue-600 ml-2 underline">→ arcane-topbar</a>
           <a href="#sample-card" className="text-blue-600 ml-2 underline">→ sample-card</a>
           <a href="#" className="text-gray-600 ml-2 underline">→ list</a>
@@ -147,17 +135,27 @@ export default function PreviewPage() {
           </div>
         ) : (
           // Single Component View
-          selected && (
-            <div>
-              <div className="mb-6">
-                <h2 className="text-3xl font-bold mb-2">{selected.name}</h2>
-                <p className="text-gray-600">{selected.description}</p>
+          <div>
+            {selected ? (
+              <div>
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold mb-2">{selected.name}</h2>
+                  <p className="text-gray-600">{selected.description}</p>
+                  <p className="text-sm text-green-600 mt-2">✅ Component found: {selected.id}</p>
+                </div>
+                <div className="bg-white p-8 rounded-lg shadow-sm">
+                  {selected.component}
+                </div>
               </div>
-              <div className="bg-white p-8 rounded-lg shadow-sm">
-                {selected.component}
+            ) : (
+              <div className="bg-red-100 p-6 rounded-lg">
+                <h2 className="text-xl font-bold text-red-800">Component Not Found</h2>
+                <p className="text-red-600">Selected component &quot;{selectedComponent}&quot; not found.</p>
+                <p className="text-sm text-red-500 mt-2">Available: {components.map(c => c.id).join(', ')}</p>
+                <a href="#" className="text-blue-600 underline mt-4 inline-block">← Back to list</a>
               </div>
-            </div>
-          )
+            )}
+          </div>
         )}
       </div>
     </div>
