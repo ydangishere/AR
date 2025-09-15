@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/AR/" />
+    <link rel="icon" type="image/svg+xml" href="/AR/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Portal - Component Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      (function () {
+        var BASE = '/AR/';
+        function fixUrl(u) {
+          if (!u) return u;
+          if (u.startsWith('/assets/')) return BASE + u.slice(1);
+          if (u.startsWith('/portal/')) return BASE + u.slice('/portal/'.length);
+          return u;
+        }
+        function rewriteInTree(root) {
+          Array.prototype.forEach.call(root.querySelectorAll('img[src^="/assets/"]'), function (img) {
+            var s = img.getAttribute('src');
+            var fixed = fixUrl(s);
+            if (fixed !== s) img.setAttribute('src', fixed);
+          });
+          Array.prototype.forEach.call(root.querySelectorAll('[style]'), function (el) {
+            var bg = el.style && el.style.backgroundImage;
+            if (bg && bg.indexOf('url(/assets/') !== -1) {
+              el.style.backgroundImage = bg.replace('url(/assets/', 'url(' + BASE + 'assets/');
+            }
+          });
+        }
+        function setupObserver() {
+          var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+              if (m.type === 'childList') {
+                m.addedNodes.forEach(function (node) {
+                  if (node.nodeType === 1) {
+                    rewriteInTree(node);
+                  }
+                });
+              } else if (m.type === 'attributes' && m.attributeName === 'src' && m.target.tagName === 'IMG') {
+                var s = m.target.getAttribute('src');
+                var fixed = fixUrl(s);
+                if (fixed !== s) m.target.setAttribute('src', fixed);
+              }
+            });
+          });
+          observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'style']
+          });
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+          rewriteInTree(document);
+          setupObserver();
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/main.tsx"></script>
+  </body>
+</html>
+
