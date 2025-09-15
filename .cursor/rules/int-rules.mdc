@@ -1,0 +1,14 @@
+---
+description: Quan trọng
+globs: true
+alwaysApply: true
+---
+- Không tự ý thay đổi cấu trúc thự mục components. 
+- Nếu có hành động nào làm thay đổi cấu trúc file hiện hành thì phải hỏi cụ thể chi tiết trước.
+- Không được tự ý xoá file trừ khi có sự đồng ý của tôi.
+- Không đề xuất giải pháp làm ảnh hưởng tới cấu trúc các files và link preview local hiện tại.
+- Không đề xuất giải pháp làm hỏng css components hiện tại.
+- Mỗi 1 CMD line đều phải nói rõ mục đích và cài vào đâu trước khi cài.
+- Trước mỗi 1 lệnh CLI đều phải hỏi ý và không được tuỳ ý thực hiện. Khi tôi nói thực hiện dùm thì thực hiện.
+- Luôn đưa ra chỉ dẫn step by step.
+- Không thay đổi cấu trúc thự mục components.
