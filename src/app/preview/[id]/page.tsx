@@ -4,7 +4,7 @@ import ArcaneTopbar from '@/components/ui/ArcaneTopbar';
 import OffertrackbuttonActive from '@/components/ui/OffertrackbuttonActive';
 import BonustrackbuttonInactive from '@/components/ui/BonustrackbuttonInactive';
 import BGAll from '@/components/ui/BGAll';
-import SwipingTabBar from '@/components/ui/SwipingTabBar';
+import SwipingTabBarDemo from '@/components/ui/SwipingTabBarDemo';
 import ComponentPreviewClient from './ComponentPreviewClient';
 
 // Component registry - same as main preview
@@ -37,7 +37,7 @@ const components = [
     id: 'swiping-tab-bar',
     name: 'Swiping Tab Bar',
     description: 'Responsive tab bar with overflow scroll and hexagonal design',
-    component: <SwipingTabBar />
+    component: <SwipingTabBarDemo />
   }
 ];
 
