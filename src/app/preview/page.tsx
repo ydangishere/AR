@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import ArcaneTopbar from '@/components/ui/ArcaneTopbar';
 import OffertrackbuttonActive from '@/components/ui/OffertrackbuttonActive';
 import BonustrackbuttonInactive from '@/components/ui/BonustrackbuttonInactive';
@@ -98,17 +99,17 @@ export default function PreviewPage() {
           <div>
             <p className="text-gray-600 mb-6">Click on any component to view it in full display</p>
             <div className="grid gap-4">
-              {components.map((comp) => (
-                <div
-                  key={comp.id}
-                  onClick={() => setSelectedComponent(comp.id)}
-                  className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all"
-                >
-                  <h3 className="font-semibold text-lg">{comp.name}</h3>
-                  <p className="text-gray-600 text-sm">{comp.description}</p>
-                  <div className="text-blue-500 text-sm mt-2">Click to view →</div>
-                </div>
-              ))}
+            {components.map((comp) => (
+              <Link
+                href={`/preview/${comp.id}`}
+                key={comp.id}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md border transition-all block"
+              >
+                <h3 className="font-semibold text-lg">{comp.name}</h3>
+                <p className="text-gray-600 text-sm">{comp.description}</p>
+                <div className="text-blue-600 text-sm mt-2 underline">Open preview page →</div>
+              </Link>
+            ))}
               
               {components.length === 1 && (
                 <div className="bg-gray-100 p-6 rounded-lg text-center text-gray-500">
