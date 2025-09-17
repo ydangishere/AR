@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Program+OT+Bold:ital,wght@0,400&display=swap');
+
+:root {
+  /* Match local globals */
+  --color-tan: #bab293;
+  --font-program-ot-bold: 'Program OT Bold', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Keep defaults same as local */
+body { margin: 0; line-height: normal; }
+
+

@@ -2,5 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Color */
+  --color-tan: #bab293;
+
+  /* Font */
+  --font-program-ot-bold: 'Program OT Bold', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Program+OT+Bold:ital,wght@0,400&display=swap');
+
 :root { --brand: #ff0844; }
 .dark { --brand: #ff0844; }

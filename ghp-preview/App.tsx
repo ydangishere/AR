@@ -1,14 +1,15 @@
-'use client';
+import React, { useEffect, useState } from 'react'
+import { ComponentRegistry } from './registry'
 
-import { useState } from 'react';
-import ArcaneTopbar from '@/components/ui/ArcaneTopbar';
-import OffertrackbuttonActive from '@/components/ui/OffertrackbuttonActive';
-import BonustrackbuttonInactive from '@/components/ui/BonustrackbuttonInactive';
-import BGAll from '@/components/ui/BGAll';
-import SwipingTabBar from '@/components/ui/SwipingTabBar';
+// Import components from the main project
+import ArcaneTopbar from '../src/components/ui/ArcaneTopbar'
+import OffertrackbuttonActive from '../src/components/ui/OffertrackbuttonActive'
+import BonustrackbuttonInactive from '../src/components/ui/BonustrackbuttonInactive'
+import BGAll from '../src/components/ui/BGAll'
+import SwipingTabBar from '../src/components/ui/SwipingTabBar'
 
 // Demo component with state management
-const SwipingTabBarDemo = () => {
+function SwipingTabBarDemo() {
   const [activeTab, setActiveTab] = useState('special-store');
   
   const tabs = [
@@ -33,9 +34,9 @@ const SwipingTabBarDemo = () => {
       onTabChange={handleTabChange}
     />
   );
-};
+}
 
-// Component list - Add new components here
+// Component registry - mirrors the local preview system
 const components = [
   {
     id: 'arcane-topbar',
@@ -68,22 +69,34 @@ const components = [
     component: <SwipingTabBarDemo />
   }
   // Add more components as: { id: 'component-name', name: 'Display Name', description: 'Brief description', component: <YourComponent /> }
-];
+]
 
-export default function PreviewPage() {
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+export default function App() {
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null)
 
-  const selected = components.find(c => c.id === selectedComponent);
+  // Hash-based routing for GH Pages: /AR/#/<id>
+  useEffect(() => {
+    const readFromHash = () => {
+      const hash = window.location.hash || ''
+      const id = hash.startsWith('#/') ? hash.slice(2) : ''
+      if (id) setSelectedComponent(id)
+    }
+    readFromHash()
+    window.addEventListener('hashchange', readFromHash)
+    return () => window.removeEventListener('hashchange', readFromHash)
+  }, [])
+
+  const selected = components.find(c => c.id === selectedComponent)
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b p-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Component Gallery</h1>
+          <h1 className="text-2xl font-bold">Component Gallery - GitHub Pages</h1>
           {selectedComponent && (
             <button
-              onClick={() => setSelectedComponent(null)}
+              onClick={() => { setSelectedComponent(null); window.location.hash = '' }}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               ← Back to List
@@ -101,7 +114,7 @@ export default function PreviewPage() {
               {components.map((comp) => (
                 <div
                   key={comp.id}
-                  onClick={() => setSelectedComponent(comp.id)}
+                  onClick={() => { setSelectedComponent(comp.id); window.location.hash = '/' + comp.id }}
                   className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer border transition-all"
                 >
                   <h3 className="font-semibold text-lg">{comp.name}</h3>
@@ -134,5 +147,6 @@ export default function PreviewPage() {
         )}
       </div>
     </div>
-  );
+  )
 }
+

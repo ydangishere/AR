@@ -3,12 +3,33 @@ description: Quan trọng
 globs: true
 alwaysApply: true
 ---
-- Không tự ý thay đổi cấu trúc thự mục components. 
+- Không tự ý thay đổi cấu trúc thự mục components.
+- Khi dẩy lên github không thay đổi css hay code của components
+- Mọi thứ làm local trước, chỉ khi tôi yêu cầu push lên github thi mới push lên github nhé.
 - Nếu có hành động nào làm thay đổi cấu trúc file hiện hành thì phải hỏi cụ thể chi tiết trước.
 - Không được tự ý xoá file trừ khi có sự đồng ý của tôi.
 - Không đề xuất giải pháp làm ảnh hưởng tới cấu trúc các files và link preview local hiện tại.
 - Không đề xuất giải pháp làm hỏng css components hiện tại.
 - Mỗi 1 CMD line đều phải nói rõ mục đích và cài vào đâu trước khi cài.
-- Trước mỗi 1 lệnh CLI đều phải hỏi ý và không được tuỳ ý thực hiện. Khi tôi nói thực hiện dùm thì thực hiện.
+- Trước mỗi 1 lệnh CLI đều phải hỏi ý và không được tự ý thực hiện. Khi tôi nói thực hiện dùm thì thực hiện.
 - Luôn đưa ra chỉ dẫn step by step.
-- Không thay đổi cấu trúc thự mục components.
+- Không thay đổi cấu trúc thư mục components.
+- Tôi muốn tao components va preview local. Sau khi preview local ok xong tôi sẽ yêu cầu bạn đưa lên github. Đưa lêngithub xong toi se vao link preview github để iểm tra.
+- Đồng bộ github y chang local trừ những khác biệt không thể nào làm khác được.
+- Khi push lên GitHub, phải làm cho GitHub giống hệt bản local. Tuyệt đối không thay đổi gì trên local tại thời điểm push.
+
+---
+- Do not change the components directory structure on your own.
+- When pushing to GitHub, do not change the CSS or the code of the components.
+- Do everything locally first; only push to GitHub when I explicitly ask you to.
+- If any action would change the current file structure, ask me first with specific details.
+- Do not delete any files without my permission.
+- Do not propose solutions that would affect the current file structure or the existing local preview links.
+- Do not propose solutions that would break the current component CSS.
+- For every command line, clearly state its purpose and where it will install before running it.
+- Before each CLI command, ask for approval and do not execute anything on your own. Only proceed when I tell you to.
+- Always provide step-by-step instructions.
+- Do not change the components directory structure.
+- I want to create components and preview them locally. After the local preview is confirmed to be fine, I will ask you to push them to GitHub. Once they are pushed to GitHub, I will check them through the GitHub preview link.
+- Sync GitHub exactly the same as local, except for differences that cannot be avoided.
+- When pushing to GitHub, make GitHub match local exactly. Do not modify local at push time. Only acceptable differences are those technically unavoidable.
